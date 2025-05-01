@@ -62,12 +62,12 @@ function Header() {
             {getBrandText()}
           </Navbar.Brand>
         </div>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" className="mr-2">
+        {/* <Navbar.Toggle aria-controls="basic-navbar-nav" className="mr-2">
           <span className="navbar-toggler-bar burger-lines"></span>
           <span className="navbar-toggler-bar burger-lines"></span>
           <span className="navbar-toggler-bar burger-lines"></span>
-        </Navbar.Toggle>
-        <Navbar.Collapse id="basic-navbar-nav">
+        </Navbar.Toggle> */}
+        {/* <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="nav mr-auto" navbar>
             <Nav.Item>
               <Nav.Link
@@ -202,7 +202,7 @@ function Header() {
               </Nav.Link>
             </Nav.Item>
           </Nav>
-        </Navbar.Collapse>
+        </Navbar.Collapse> */}
       </Container>
     </Navbar>
   );
