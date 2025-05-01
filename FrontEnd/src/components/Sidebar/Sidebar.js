@@ -60,7 +60,6 @@ function Sidebar({ color, image, routes }) {
                 <li
                   className={
                     prop.upgrade
-
                   }
                   key={key}
                 >
