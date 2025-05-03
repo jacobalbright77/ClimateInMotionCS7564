@@ -87,7 +87,6 @@ const TemperatureStripeChart = () => {
         fontSize: "1.1rem"
       }}
     >
-      {/* Title */}
       <h2 style={{ textAlign: "center", fontSize: "2rem", marginBottom: "1rem" }}>
       Global Temperature Anomaly
       </h2>
@@ -135,16 +134,14 @@ const TemperatureStripeChart = () => {
         </label>
       </div>
 
-      {/* Layout */}
       <div style={{ justifyContent: "center", alignItems: "center", gap: "6rem" }}>
-        {/* Year Slider (Left) */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            width: "70px", // Adjusted width to accommodate the year display
-            position: "relative", // For positioning the year value
+            width: "70px",
+            position: "relative",
           }}
         >
         </div>
