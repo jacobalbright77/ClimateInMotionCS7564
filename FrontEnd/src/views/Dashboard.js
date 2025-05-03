@@ -1,5 +1,7 @@
 import React from "react";
-// import ChartistGraph from "react-chartist";
+
+import RechartStackedAreaChart from "views/RechartsStackedAreaChart";
+
 // react-bootstrap components
 import {
   Badge,
@@ -63,7 +65,7 @@ function Dashboard() {
               </Card.Header>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>
-              {/* <RechartsPieChart/> */}
+              <RechartStackedAreaChart/>
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
