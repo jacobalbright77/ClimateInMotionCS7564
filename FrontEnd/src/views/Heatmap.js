@@ -1,5 +1,7 @@
 import React from "react";
 
+import WorldTemperatureMap from "views/WorldTemperatureMap";
+
 // react-bootstrap components
 import {
   Badge,
@@ -26,7 +28,7 @@ function Typography() {
                 </p>
               </Card.Header>
               <Card.Body style={{ height: "900px" }}>
-                
+                <WorldTemperatureMap/>
               </Card.Body>
             </Card>
           </Col>
