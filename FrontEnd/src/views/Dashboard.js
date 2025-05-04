@@ -27,40 +27,6 @@ function Dashboard() {
     <>
       <Container fluid>
         <Row>
-          <Col md="6">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h3">Pie Chart</Card.Title>
-                <p className="card-category">Temperature Increase by Country per Year</p>
-              </Card.Header>
-              <Card.Body>
-              <div style={{ margin: "20px 0" }}></div>
-              {/* <RechartsPieChart/> */}
-              </Card.Body>
-              <Card.Footer>
-                <hr></hr>
-                Note at the bottom here...
-              </Card.Footer>
-            </Card>
-          </Col>
-          <Col md="6">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h3">Other Chart</Card.Title>
-                <p className="card-category">Temperature Increase by Country per Year</p>
-              </Card.Header>
-              <Card.Body>
-              <div style={{ margin: "20px 0" }}></div>
-              {/* <RechartsPieChart/> */}
-              </Card.Body>
-              <Card.Footer>
-                <hr></hr>
-                Note at the bottom here...
-              </Card.Footer>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
           <Col md="12">
             <Card>
               <Card.Header>
@@ -132,8 +98,40 @@ function Dashboard() {
             </Card>
           </Col>
           </Row>
-          
-
+          <Row>
+          <Col md="6">
+            <Card>
+              <Card.Header>
+                <Card.Title as="h3">Pie Chart</Card.Title>
+                <p className="card-category">Temperature Increase by Country per Year</p>
+              </Card.Header>
+              <Card.Body>
+              <div style={{ margin: "20px 0" }}></div>
+              {/* <RechartsPieChart/> */}
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                Note at the bottom here...
+              </Card.Footer>
+            </Card>
+          </Col>
+          <Col md="6">
+            <Card>
+              <Card.Header>
+                <Card.Title as="h3">Other Chart</Card.Title>
+                <p className="card-category">Temperature Increase by Country per Year</p>
+              </Card.Header>
+              <Card.Body>
+              <div style={{ margin: "20px 0" }}></div>
+              {/* <RechartsPieChart/> */}
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                Note at the bottom here...
+              </Card.Footer>
+            </Card>
+          </Col>
+        </Row>
       </Container>
     </>
   );
