@@ -27,7 +27,7 @@ function Typography() {
                   Temperature Dataset provided by World Bank
                 </p>
               </Card.Header>
-              <Card.Body style={{ height: "1500px" }}>
+              <Card.Body style={{ height: "1200px" }}>
                 <WorldTemperatureMap/>
               </Card.Body>
             </Card>

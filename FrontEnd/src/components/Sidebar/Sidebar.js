@@ -43,13 +43,11 @@ function Sidebar({ color, image, routes }) {
             className="simple-text logo-mini mx-1"
           >
           </a>
-          <p className="simple-text " style={{ fontSize: "16px" }}>
+          <p className="simple-text " style={{ fontSize: "17px" }}>
             Climate in Motion
           </p>
           
-          <div className="logo-img">
-              <img src={require("assets/img/reactlogo.png")} alt="Lawgorithm Logo" />
-            </div>
+          <i className="nc-icon nc-globe-2" style={{ fontSize: "1.5rem" }}></i>            
           
 
         </div>

@@ -19,7 +19,7 @@ const colorScale = scaleLinear()
 
 const WorldTemperatureMap = () => {
   const [data, setData] = useState([]);
-  const [selectedYear, setSelectedYear] = useState("2017");
+  const [selectedYear, setSelectedYear] = useState("1950");
 
   useEffect(() => {
     csv(`/world-temperatures.csv`).then((data) => {
@@ -30,6 +30,15 @@ const WorldTemperatureMap = () => {
   const handleYearChange = (e) => {
     setSelectedYear(e.target.value);
   };
+  
+  const handleCountrySelect = (geo) => {
+    const index = selected_countries.indexOf(geo.properties.name);
+    index == -1 ? selected_countries.push(geo.properties.name) : selected_countries.splice(index, 1)
+      
+    console.log(selected_countries)
+  }
+
+  const selected_countries = []
 
   return (
     <div style={{ textAlign: "center", paddingBottom: "30px" }}>
@@ -68,6 +77,7 @@ const WorldTemperatureMap = () => {
                     fill={d && d[selectedYear] !== undefined
                       ? colorScale(+d[selectedYear])
                       : "#F5F4F6"}
+                      onClick={() => handleCountrySelect(geo)}
                     style={{
                       default: { outline: "none" },
                       hover: { outline: "none" },
@@ -102,7 +112,6 @@ const WorldTemperatureMap = () => {
           <span>Hot (35°C)</span>
         </div>
       </div>
-
     </div>
   );
 };
