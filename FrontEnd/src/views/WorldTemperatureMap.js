@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { csv } from "d3-fetch";
 import { scaleLinear } from "d3-scale";
 import {
@@ -8,6 +8,7 @@ import {
   Sphere,
   Graticule
 } from "react-simple-maps";
+import {Tooltip} from 'react-tooltip'
 
 const geoUrl = "/features.json";
 
@@ -30,15 +31,23 @@ const WorldTemperatureMap = () => {
   const handleYearChange = (e) => {
     setSelectedYear(e.target.value);
   };
+
+  const [tooltipInfo, setTooltipInfo] = React.useState("")
+
   
+  const SelectedCountries = []
+
+  // export const selectedCountryContext = createContext()
+
+
+  //Updates SelectedCountries list by adding country if not already present and removing if already in the list
   const handleCountrySelect = (geo) => {
-    const index = selected_countries.indexOf(geo.properties.name);
-    index == -1 ? selected_countries.push(geo.properties.name) : selected_countries.splice(index, 1)
-      
-    console.log(selected_countries)
+    const index = SelectedCountries.indexOf(geo.properties.name);
+    index == -1 ? SelectedCountries.push(geo.properties.name) : SelectedCountries.splice(index, 1)
+    
+    console.log(SelectedCountries)
   }
 
-  const selected_countries = []
 
   return (
     <div style={{ textAlign: "center", paddingBottom: "30px" }}>
@@ -52,7 +61,7 @@ const WorldTemperatureMap = () => {
         step="1"
         value={selectedYear}
         onChange={handleYearChange}
-        style={{ width: "80%", marginBottom: "20px" }}
+        style={{ width: "80%", marginBottom: "0px" }}
       />
 
       {/* Map */}
@@ -63,7 +72,6 @@ const WorldTemperatureMap = () => {
         }}
         style={{ width: "100%", height: "auto" }}
       >
-        <Sphere stroke="#E4E5E6" strokeWidth={0.5} />
         <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
         {data.length > 0 && (
           <Geographies geography={geoUrl}>
@@ -74,14 +82,25 @@ const WorldTemperatureMap = () => {
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
+                    data-Tooltip-id="mapTooltip"
+                    data-tooltip-content={tooltipInfo}
                     fill={d && d[selectedYear] !== undefined
                       ? colorScale(+d[selectedYear])
                       : "#F5F4F6"}
-                      onClick={() => handleCountrySelect(geo)}
+                    onClick={() => handleCountrySelect(geo)}
+                    onMouseOver={
+                    d && d[selectedYear] !== undefined ?
+                      () => {
+                         setTooltipInfo(`${geo.properties.name}: ${d[selectedYear]}°C`) 
+                        } : null
+                    }
+                    onMouseOut={() => {
+                      setTooltipInfo("")
+                    }}
                     style={{
-                      default: { outline: "none" },
-                      hover: { outline: "none" },
-                      pressed: { outline: "none" }
+                      default: { outline: "#000", stroke: "#000", strokeWidth: 0.3},
+                      hover: { outline: "#000", stroke: "#000", strokeWidth: 1.2},
+                      pressed: { outline: "#fff", stroke: "#000", strokeWidth: 2.0}
                     }}
                   />
                 );
@@ -90,12 +109,19 @@ const WorldTemperatureMap = () => {
           </Geographies>
         )}
       </ComposableMap>
-
+      <Tooltip id="mapTooltip" />
+      
+      {/* <p>Selected Countries:</p>
+      <ul>
+        {SelectedCountries.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul> */}
       {/* Legend */}
       <div style={{ marginTop: "20px" }}>
         <div style={{
           height: "20px",
-          width: "300px",
+          width: "500px",
           background: "linear-gradient(to right, #0000ff, #ffffff, #ff0000)",
           margin: "0 auto",
           borderRadius: "10px"
@@ -103,7 +129,7 @@ const WorldTemperatureMap = () => {
         <div style={{
           display: "flex",
           justifyContent: "space-between",
-          width: "300px",
+          width: "600px",
           margin: "5px auto 0 auto",
           fontSize: "14px",
           color: "#555"
