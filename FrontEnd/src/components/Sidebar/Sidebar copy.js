@@ -22,36 +22,35 @@ import { Nav } from "react-bootstrap";
 
 import logo from "assets/img/reactlogo.png";
 
+import image2 from "assets/img/sidebar-4.jpg"
+
 function Sidebar({ color, image, routes }) {
   const location = useLocation();
   const activeRoute = (routeName) => {
     return location.pathname.indexOf(routeName) > -1 ? "active" : "";
   };
   return (
-    <div className="sidebar" data-image={image} data-color={color}>
+    <div className="sidebar" data-image={image2} data-color={color}>
       <div
         className="sidebar-background"
         style={{
-          backgroundImage: "url(" + image + ")"
+          backgroundImage: "url(" + image2 + ")"
         }}
       />
       <div className="sidebar-wrapper">
         <div className="logo d-flex align-items-center justify-content-start">
-
-        <a
+          <a
             href=""
             className="simple-text logo-mini mx-1"
           >
           </a>
-          <p className="simple-text " style={{ fontSize: "16px" }}>
-            Climate in Motion
+          <p className="simple-text ">
+            LawGorithm
           </p>
           
           <div className="logo-img">
-              <img src={require("assets/img/reactlogo.png")} alt="Lawgorithm Logo" />
+              <img src={require("assets/img/lawgorithm_logo.png")} alt="Lawgorithm Logo" />
             </div>
-          
-
         </div>
         <Nav>
           {routes.map((prop, key) => {
@@ -60,8 +59,8 @@ function Sidebar({ color, image, routes }) {
                 <li
                   className={
                     prop.upgrade
-                    ? "active active-pro"
-                    : activeRoute(prop.path)
+                      ? "active active-pro"
+                      : activeRoute(prop.path)
                   }
                   key={key}
                 >

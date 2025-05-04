@@ -8,6 +8,8 @@
     "@testing-library/user-event": "^13.5.0",
     "d3-fetch": "^3.0.1",
     "react-simple-maps": "^3.0.0",
+    "recharts": "^2.15.2",
+    "web-vitals": "^2.1.4",
     "@fortawesome/fontawesome-free": "5.15.2",
     "ajv": "^8.16.0",
     "bootstrap": "4.6.0",
@@ -22,7 +24,6 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "5.0.1",
     "reactstrap": "8.8.1",
-    "recharts": "^2.15.2",
     "sass": "1.53.0"
   },
   "optionalDependencies": {

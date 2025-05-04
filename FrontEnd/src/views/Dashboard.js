@@ -3,6 +3,8 @@ import React from "react";
 import RechartStackedAreaChart from "views/RechartsStackedAreaChart";
 import RechartsPieChart from "views/RechartsPieChart";
 import RechartsStripeChart from "views/RechartsStripeChart";
+import RechartsLineChart from "views/RechartsLineChart";
+
 
 // react-bootstrap components
 import {
@@ -121,7 +123,7 @@ function Dashboard() {
               </Card.Header>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>
-              {/* <RechartsPieChart/> */}
+              <RechartsLineChart/>
               </Card.Body>
               <Card.Footer>
                 <hr></hr>

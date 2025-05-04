@@ -27,8 +27,6 @@ const WorldTemperatureMap = () => {
     });
   }, []);
 
-  console.log(data, "DATA")
-
   const handleYearChange = (e) => {
     setSelectedYear(e.target.value);
   };

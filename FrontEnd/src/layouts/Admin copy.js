@@ -21,11 +21,11 @@ import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
 import Sidebar from "components/Sidebar/Sidebar";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
+// import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import routes from "routes.js";
 
-import sidebarImage from "assets/img/sidebar-6.jpg";
+import sidebarImage from "assets/img/sidebar-3.jpg";
 
 function Admin() {
   const [image, setImage] = React.useState(sidebarImage);
@@ -64,19 +64,23 @@ function Admin() {
         <div className="main-panel" ref={mainPanel}>
           <AdminNavbar />
           <div className="content">
-            <Switch>{getRoutes(routes)} <Redirect from="/" to="/heatmap" /></Switch>
+            <Switch>
+              {getRoutes(routes)}
+              <Redirect from="/" to="/homepage" />
+              
+              </Switch>
           </div>
           <Footer />
         </div>
       </div>
-      <FixedPlugin
+      {/* <FixedPlugin
         hasImage={hasImage}
         setHasImage={() => setHasImage(!hasImage)}
         color={color}
         setColor={(color) => setColor(color)}
         image={image}
         setImage={(image) => setImage(image)}
-      />
+      /> */}
     </>
   );
 }
