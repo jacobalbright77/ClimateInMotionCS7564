@@ -9,16 +9,20 @@ This section contains the files I worked on for the **"Temperature Pie Chart"** 
 
 ```
 📁 public/
-  └── full_data.json      ← Temperature data for countries
-  └── index.html          ← Main HTML entry point
+ └── full_data.json   ← Contains temperature data for countries
+ └── index.html     ← Main HTML file for rendering the application
+
 
 📁 src/
-  └── TemperaturePieChart.js   ← Main React component for the pie chart
-  
-  └── index.js                 ← App entry point (renders the root)
-  └── App.js                   ← May import and render the chart component
+ └── App.js        ←  App for displaying top 10 hottest countries pie chart
+ └── AppForSelectedCountries.js  ← Displays pie chart for user-selected countries
+ └── TemperaturePieChart.js    ← Reusable component showing pie chart for top 10 hottest countries
+ └── TemperaturePieChartForSelectedCountries.js ← Specialized pie chart for user-selected countries
+ └── index.js        ← App entry point; renders App (currently includes both App variations)
+ └── logo.svg       ← Default logo file
+ └── reportWebVitals.js  ← Tool for measuring app performance
 
-📄 package.json           ← Lists dependencies like recharts, scripts, etc.
+📄 package.json     ← Lists dependencies (like recharts) and executable scripts
 ```
 
 
