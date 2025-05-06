@@ -17,7 +17,7 @@ function RechartsLineChart() {
   
 useEffect(() => {
     // Fetch data from the CSV file 
-    d3.csv("/avg_temps_transpose.csv", d3.autoType).then((parsedData) => {
+    d3.csv("/world-temperatures-transpose.csv", d3.autoType).then((parsedData) => {
       console.log(parsedData)
       setData(parsedData);
     });
