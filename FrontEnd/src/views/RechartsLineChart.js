@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext} from "react";
 import {
   LineChart,
   Line,
@@ -10,6 +10,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Papa from "papaparse";
+import {CountryContext} from './CountryContext.js'
+
 
 function RechartsLineChart() {
   const [data, setData] = useState([]);
@@ -20,7 +22,9 @@ function RechartsLineChart() {
     "#aaffc3", "#808000", "#ffd8b1", "#000075", "#a9a9a9"
   ];
 
-  const selected_countries = ["United States of America", "China"];
+  const {selectedCountries} = useContext(CountryContext)
+
+  // const selected_countries2 = ["United States of America", "China"];
 
   useEffect(() => {
     Papa.parse("/world-temperatures-transpose.csv", {
@@ -31,7 +35,7 @@ function RechartsLineChart() {
 
         const reshaped = rawRows.map((row) => {
           const newRow = { Year: parseInt(row["Name"]) };
-          selected_countries.forEach((country) => {
+          selectedCountries.forEach((country) => {
             if (row[country] && !isNaN(parseFloat(row[country]))) {
               newRow[country] = parseFloat(row[country]);
             }
@@ -44,6 +48,9 @@ function RechartsLineChart() {
     });
   }, []);
 
+  console.log(data)
+
+
   return (
     <div style={{ width: "100%", height: 900 }}>
       <ResponsiveContainer width="100%" height="100%">
@@ -53,7 +60,8 @@ function RechartsLineChart() {
           <YAxis />
           <Tooltip />
           <Legend />
-          {selected_countries.map((name, index) => (
+          {/* selectedCountries.length >= 0 ?  */}
+          {selectedCountries.map((name, index) => (
             <Line
               key={name}
               type="monotone"

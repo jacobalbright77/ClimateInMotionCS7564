@@ -17,6 +17,7 @@
 */
 import React, { Component } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+import { CountryProvider } from "views/CountryContext";
 
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
@@ -57,6 +58,8 @@ function Admin() {
       element.parentNode.removeChild(element);
     }
   }, [location]);
+
+  //<CountryProvider> added to share state of countries list
   return (
     <>
       <div className="wrapper">
@@ -64,7 +67,9 @@ function Admin() {
         <div className="main-panel" ref={mainPanel}>
           <AdminNavbar />
           <div className="content">
+            <CountryProvider>
             <Switch>{getRoutes(routes)} <Redirect from="/" to="/heatmap" /></Switch>
+            </CountryProvider>
           </div>
           <Footer />
         </div>

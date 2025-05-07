@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useContext} from "react";
 import {
   AreaChart,
   Area,
@@ -9,32 +9,30 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Papa from "papaparse";
+import {CountryContext} from './CountryContext.js'
 
-class RechartsStackedAreaChart extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      selectedCountries: ["United States of America", "China"],
-      colors: [
-        "#ff0000", "#ffa500", "#008000", "#0000ff", "#800080", "#ee82ee",
-        "#f032e6", "#fabed4", "#469990", "#dcbeff", "#9a6324", "#800000",
-        "#aaffc3", "#808000", "#ffd8b1", "#000075", "#a9a9a9"
-      ]
-    };
-  }
 
-  componentDidMount() {
+function RechartsStackedAreaChart() {
+    const [data, setData] = useState([]);
+  
+    const colors = [
+      "#ff0000", "#ffa500", "#008000", "#0000ff", "#800080", "#ee82ee",
+      "#f032e6", "#fabed4", "#469990", "#dcbeff", "#9a6324", "#800000",
+      "#aaffc3", "#808000", "#ffd8b1", "#000075", "#a9a9a9"
+    ];
+  
+    const {selectedCountries} = useContext(CountryContext)
+
+
+  useEffect(() => {
     Papa.parse("/world-temperatures-transpose.csv", {
       download: true,
       header: true,
       complete: (result) => {
         const rawRows = result.data;
-        const { selectedCountries } = this.state;
 
-        // Build chart data: one row per year with selected countries
         const reshaped = rawRows.map((row) => {
-          const newRow = { Year: row["Name"] };
+          const newRow = { Year: parseInt(row["Name"]) };
           selectedCountries.forEach((country) => {
             if (row[country] && !isNaN(parseFloat(row[country]))) {
               newRow[country] = parseFloat(row[country]);
@@ -43,13 +41,11 @@ class RechartsStackedAreaChart extends Component {
           return newRow;
         });
 
-        this.setState({ data: reshaped });
+        setData(reshaped);
       }
     });
-  }
+  }, []);
 
-  render() {
-    const { data, selectedCountries, colors } = this.state;
 
     return (
       <div className="chart-container">
@@ -83,6 +79,5 @@ class RechartsStackedAreaChart extends Component {
       </div>
     );
   }
-}
 
 export default RechartsStackedAreaChart;

@@ -8,7 +8,10 @@ import {
   Sphere,
   Graticule
 } from "react-simple-maps";
+
 import {Tooltip} from 'react-tooltip'
+
+import {CountryContext} from './CountryContext.js'
 
 const geoUrl = "/features.json";
 
@@ -21,6 +24,7 @@ const colorScale = scaleLinear()
 const WorldTemperatureMap = () => {
   const [data, setData] = useState([]);
   const [selectedYear, setSelectedYear] = useState("1950");
+  const {selectedCountries, setCountries } = useContext(CountryContext) //Get context from CountryContext.js
 
   useEffect(() => {
     csv(`/world-temperatures.csv`).then((data) => {
@@ -35,17 +39,23 @@ const WorldTemperatureMap = () => {
   const [tooltipInfo, setTooltipInfo] = React.useState("")
 
   
-  const SelectedCountries = []
-
-  // export const selectedCountryContext = createContext()
 
 
   //Updates SelectedCountries list by adding country if not already present and removing if already in the list
   const handleCountrySelect = (geo) => {
-    const index = SelectedCountries.indexOf(geo.properties.name);
-    index == -1 ? SelectedCountries.push(geo.properties.name) : SelectedCountries.splice(index, 1)
+
+    //Check if clicked country is already in the selectedCountries list
+    const selectionCheck = selectedCountries.includes(geo.properties.name)
     
-    console.log(SelectedCountries)
+    const selectedCountriesUpdate = selectionCheck 
+    ? 
+    //If selectionCheck is true, country is already in selectedCountries so must be removed with filter
+    selectedCountries.filter((countryName) => countryName !== geo.properties.name)
+    : 
+    //If selectionCheck is false, country is not in selectedCountries so must be added with concat method
+    selectedCountries.concat(geo.properties.name)
+
+    setCountries(selectedCountriesUpdate) //Updated selected countries through context to update other files
   }
 
 
