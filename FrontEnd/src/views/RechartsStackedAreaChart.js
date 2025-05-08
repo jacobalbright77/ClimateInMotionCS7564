@@ -6,6 +6,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  Legend,
   ResponsiveContainer,
 } from "recharts";
 import Papa from "papaparse";
@@ -49,13 +50,11 @@ function RechartsStackedAreaChart() {
 
     return (
       <div className="chart-container">
-        {/* <h3 style={{ textAlign: "center", marginBottom: "10px" }}>
-          Stacked Area Chart
-        </h3>
-        <p style={{ textAlign: "center", marginTop: 0, color: "#666" }}>
-          Temperature Increase by Country per Year
-        </p> */}
-        <ResponsiveContainer width="100%" height={500}>
+                {selectedCountries.length === 0 ? (
+        <h3><b>Please select countries for comparison on Heatmap tab...</b></h3>
+        ) : <p></p>
+      }  
+        <ResponsiveContainer width="100%" height={500}>  
           <AreaChart
             data={data}
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
@@ -64,6 +63,7 @@ function RechartsStackedAreaChart() {
             <XAxis dataKey="Year" />
             <YAxis />
             <Tooltip />
+            <Legend />
             {selectedCountries.map((name, index) => (
               <Area
                 key={name}

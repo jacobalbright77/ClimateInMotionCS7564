@@ -35,11 +35,17 @@ function Dashboard() {
         <h1>Please select countries in heatmap tab...</h1>
       )} */}
       <Container fluid>
+      <div className="d-flex align-items-center justify-content-center">
+      <h1>Dynamic Visualizations</h1>
+      </div>
+      <div className="d-flex align-items-center justify-content-center">
+      <h3>Visuaizations Dependent on Heatmap Selection</h3>
+      </div>
       <Row>
           <Col md="12">
             <Card>
               <Card.Header>
-                
+          
                 <Card.Title as="h2" style={{ textAlign: "center", marginBottom: "10px" }}>Line Chart</Card.Title>
                 <p className="card-category" style={{ textAlign: "center", marginBottom: "10px" }}>Temperature Increase by Country per Year</p>
               </Card.Header>
@@ -91,6 +97,14 @@ function Dashboard() {
             </Card>
           </Col>
           </Row>
+
+          <div className="d-flex align-items-center justify-content-center">
+      <h1>Static Visualizations</h1>
+      </div>
+      <div className="d-flex align-items-center justify-content-center">
+      <h3>Visuaizations Independent on Heatmap Selection</h3>
+      </div>
+
           <Row>
           <Col md="12">
             <Card>

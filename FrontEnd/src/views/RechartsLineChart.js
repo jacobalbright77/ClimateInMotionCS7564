@@ -52,27 +52,31 @@ function RechartsLineChart() {
 
 
   return (
-    <div style={{ width: "100%", height: 500 }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="Year" padding={{ left: 30, right: 30 }} />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          {/* selectedCountries.length >= 0 ?  */}
-          {selectedCountries.map((name, index) => (
-            <Line
-              key={name}
-              type="monotone"
-              dataKey={name}
-              stroke={colors[index % colors.length]}
-              strokeWidth={2}
-              dot={false}
-            />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
+    <div className="chart-container">
+                {selectedCountries.length === 0 ? (
+        <h3><b>Please select countries for comparison on Heatmap tab...</b></h3>
+        ) : <p></p>
+      }    
+    <ResponsiveContainer width="100%" height={500}>
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="Year" padding={{ left: 30, right: 30 }} />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {selectedCountries.map((name, index) => (
+              <Line
+                key={name}
+                type="monotone"
+                dataKey={name}
+                stroke={colors[index % colors.length]}
+                strokeWidth={2}
+                dot={false}
+              />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      
     </div>
   );
 }

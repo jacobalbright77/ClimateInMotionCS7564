@@ -12,10 +12,12 @@ const COLORS = [
 
 
 // Main component for rendering temperature pie chart
-const TemperaturePieChartForSelectedCountries = ({ selectedCountries2, selectedYear }) => {
+const TemperaturePieChartForSelectedCountries = ({ selectedCountries, selectedYear }) => {
   const [data, setData] = useState([]); // Chart data
   const [isFahrenheit, setIsFahrenheit] = useState(false); // Toggle state
-  const {selectedCountries} = useContext(CountryContext)
+  // const {selectedCountries} = useContext(CountryContext)
+
+  // console.log(selectedCountries, "SEL")
 
 
   // Load and parse CSV data when selectedCountries or selectedYear changes
