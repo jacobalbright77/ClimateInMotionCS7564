@@ -1,8 +1,9 @@
 import React from "react";
 
 import RechartStackedAreaChart from "views/RechartsStackedAreaChart";
-import RechartsPieChart from "views/RechartsPieChart";
-import RechartsStripeChart from "views/RechartsStripeChart";
+import RechartsPieChartStatic from "views/RechartsPieChartStatic";
+import TemperaturePieChartForSelectedCountries from "views/TemperaturePieChartForSelectedCountries"
+import RechartsStripeChart from "views/TemperatureStripeChart";
 import RechartsLineChart from "views/RechartsLineChart";
 
 
@@ -26,6 +27,24 @@ function Dashboard() {
   return (
     <>
       <Container fluid>
+      <Row>
+          <Col md="12">
+            <Card>
+              <Card.Header>
+                <Card.Title as="h3">Line Chart</Card.Title>
+                <p className="card-category">Temperature Increase by Country per Year</p>
+              </Card.Header>
+              <Card.Body>
+              <div style={{ margin: "20px 0" }}></div>
+              <RechartsLineChart/>
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                Note at the bottom here...
+              </Card.Footer>
+            </Card>
+          </Col>
+          </Row>
         <Row>
           <Col md="12">
             <Card>
@@ -35,7 +54,7 @@ function Dashboard() {
               </Card.Header>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>
-              <RechartsPieChart/>
+              <TemperaturePieChartForSelectedCountries/>
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
@@ -66,8 +85,12 @@ function Dashboard() {
           <Col md="12">
             <Card>
               <Card.Header>
-                <Card.Title as="h3">Stripe Chart</Card.Title>
-                <p className="card-category">Temperature Increase by Country per Year</p>
+                <Card.Title as="h3">Global Temperature Anomaly: Stripe Chart</Card.Title>
+                <p className="card-category"><b>1)</b> This chart shows global average temperature anomalies from 1950 to 2023.</p>
+                <p className="card-category"><b>2)</b> The anomaly is the difference from the average temperature baseline across all years.</p>
+                <p className="card-category"><b>3)</b> Warmer colors indicate years hotter than average, while cooler colors indicate years colder than average.</p>
+                <p className="card-category"><b>4)</b> You can toggle between Celsius and Fahrenheit using the switch below.</p>
+                
               </Card.Header>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>
@@ -84,12 +107,12 @@ function Dashboard() {
           <Col md="12">
             <Card>
               <Card.Header>
-                <Card.Title as="h3">Line Chart</Card.Title>
+                <Card.Title as="h3">Pie Chart</Card.Title>
                 <p className="card-category">Temperature Increase by Country per Year</p>
               </Card.Header>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>
-              <RechartsLineChart/>
+              <RechartsPieChartStatic/>
               </Card.Body>
               <Card.Footer>
                 <hr></hr>

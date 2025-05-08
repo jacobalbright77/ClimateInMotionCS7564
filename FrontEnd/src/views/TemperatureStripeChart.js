@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { BarChart, Bar, Tooltip, XAxis } from "recharts";
+import Papa from "papaparse";
+import { BarChart, Bar, Tooltip, XAxis, ResponsiveContainer } from "recharts";
 
 // Helper function to map anomaly to color
 const getColor = (anomaly) => {
@@ -42,54 +43,62 @@ const TemperatureStripeChart = () => {
   };
 
   useEffect(() => {
-    fetch("/full_data.json")
-      .then((res) => res.json())
-      .then((json) => {
-        const years = Array.from({ length: 2023 - 1950 + 1 }, (_, i) => 1950 + i);
+    fetch("/world-temperatures.csv")
+      .then((res) => res.text())
+      .then((csvText) => {
+        Papa.parse(csvText, {
+          header: true,
+          dynamicTyping: true,
+          complete: (result) => {
+            const rows = result.data;
+            const years = Object.keys(rows[0]).filter((k) => /^\d{4}$/.test(k)).map(Number);
 
-        const yearToTemps = {};
-        years.forEach((year) => {
-          const key = `${year}-07`;
-          yearToTemps[year] = [];
-          for (const country in json) {
-            const val = json[country][key];
-            if (val !== undefined) yearToTemps[year].push(val);
-          }
+            const yearToTemps = {};
+            years.forEach((year) => (yearToTemps[year] = []));
+
+            rows.forEach((row) => {
+              years.forEach((year) => {
+                const val = row[year];
+                if (typeof val === "number") {
+                  yearToTemps[year].push(val);
+                }
+              });
+            });
+
+            // Calculate average for each year
+            const yearlyAverages = years.map((year) => {
+              const temps = yearToTemps[year];
+              const avg = temps.reduce((a, b) => a + b, 0) / temps.length;
+              return { year, avg };
+            });
+
+            // Calculate baseline across all years
+            const allTemps = yearlyAverages.map((d) => d.avg);
+            const baseline = allTemps.reduce((a, b) => a + b, 0) / allTemps.length;
+
+            const averagedData = yearlyAverages.map(({ year, avg }) => ({
+              year,
+              anomaly: avg - baseline
+            }));
+
+            setData(averagedData);
+          },
         });
-
-        // Calculate average for each year
-        const yearlyAverages = years.map((year) => {
-          const temps = yearToTemps[year];
-          const avg = temps.reduce((a, b) => a + b, 0) / temps.length;
-          return { year, avg };
-        });
-
-        // Calculate baseline across all years
-        const allTemps = yearlyAverages.map(d => d.avg);
-        const baseline = allTemps.reduce((a, b) => a + b, 0) / allTemps.length;
-
-        const averagedData = yearlyAverages.map(({ year, avg }) => ({
-          year,
-          anomaly: avg - baseline
-        }));
-
-        setData(averagedData);
       });
   }, []);
 
   return (
     <div
       style={{
-        backgroundColor: "#111",
-        color: "#fff",
+        backgroundColor: "#fff",
+        color: "#000",
         minHeight: "90vh",
         padding: "1rem",
         fontSize: "1.1rem"
       }}
     >
-      <h2 style={{ textAlign: "center", fontSize: "2rem", marginBottom: "1rem" }}>
-      Global Temperature Anomaly
-      </h2>
+      <p style={{ maxWidth: "80%", margin: "0 auto 1rem auto", textAlign: "center", fontSize: "1rem", lineHeight: "1.5", color: "#333" }}>
+      </p>
       <div style={{ textAlign: "center", marginBottom: "1rem" }}>
         <label style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
           <span>{useFahrenheit ? "°F" : "°C"}</span>
@@ -145,9 +154,8 @@ const TemperatureStripeChart = () => {
           }}
         >
         </div>
-
         <BarChart
-          width={window.innerWidth - (window.innerWidth*.2)}
+          width={window.innerWidth - (window.innerWidth*.03)}
           height={window.innerHeight - (window.innerHeight*.3)}
           data={data}
           margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
@@ -155,9 +163,9 @@ const TemperatureStripeChart = () => {
         <XAxis 
           dataKey="year" 
           interval={2} 
-          tick={{ fill: "#fff", fontSize: 12 }} 
-          axisLine={{ stroke: '#fff' }}
-          tickLine={{ stroke: '#fff' }}
+          tick={{ fill: "#000", fontSize: 12 }}
+          axisLine={{ stroke: '#000' }}
+          tickLine={{ stroke: '#000' }}
           height={20}
         />
         <Tooltip content={<CustomTooltip />} />
@@ -175,8 +183,11 @@ const TemperatureStripeChart = () => {
           )}
         />
         </BarChart>
+
       </div>
+
     </div>
+
   );
 };
 

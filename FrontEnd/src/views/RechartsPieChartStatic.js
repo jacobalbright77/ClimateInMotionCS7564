@@ -42,7 +42,7 @@ const TemperaturePieChart = () => {
       style={{
         backgroundColor: "#111",
         color: "#fff",
-        minHeight: "40vh",
+        minHeight: "100vh",
         padding: "1rem",
         fontSize: "1.1rem"
       }}
