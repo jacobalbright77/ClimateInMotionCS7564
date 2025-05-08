@@ -25,6 +25,7 @@ const WorldTemperatureMap = () => {
   const [data, setData] = useState([]);
   const [selectedYear, setSelectedYear] = useState("1950");
   const {selectedCountries, setCountries } = useContext(CountryContext) //Get context from CountryContext.js
+  const [isFahrenheit, setIsFahrenheit] = useState(false);
 
   useEffect(() => {
     csv(`/world-temperatures.csv`).then((data) => {
@@ -93,7 +94,60 @@ const WorldTemperatureMap = () => {
           >
             Clear Countries
           </button>
-          </div>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: "1rem",
+          gap: "1rem",
+        }}
+      >
+        <span>{isFahrenheit ? "°F" : "°C"}</span>
+        <label
+          style={{
+            position: "relative",
+            display: "inline-block",
+            width: "34px",
+            height: "18px",
+            cursor: "pointer",
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={isFahrenheit}
+            onChange={() => setIsFahrenheit((prev) => !prev)}
+            style={{ opacity: 0, width: 0, height: 0 }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: isFahrenheit ? "#2196F3" : "#ccc",
+              borderRadius: "24px",
+              transition: ".4s",
+            }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              height: "14px",
+              width: "14px",
+              left: isFahrenheit ? "18px" : "2px",
+              bottom: "2px",
+              backgroundColor: "white",
+              borderRadius: "50%",
+              transition: ".4s",
+            }}
+          />
+        </label>
+      </div>
+
       {/* Map */}
       <ComposableMap
         projectionConfig={{
@@ -121,7 +175,9 @@ const WorldTemperatureMap = () => {
                     onMouseOver={
                     d && d[selectedYear] !== undefined ?
                       () => {
-                         setTooltipInfo(`${geo.properties.name}: ${d[selectedYear]}°C`) 
+                         const value = +d[selectedYear];
+                         const display = isFahrenheit ? (value * 9/5 + 32).toFixed(2) + "°F" : value.toFixed(2) + "°C";
+                         setTooltipInfo(`${geo.properties.name}: ${display}`)
                         } : null
                     }
                     onMouseOut={() => {
@@ -164,8 +220,8 @@ const WorldTemperatureMap = () => {
           fontSize: "14px",
           color: "#555"
         }}>
-          <span>Cold (-10°C)</span>
-          <span>Hot (35°C)</span>
+          <span>Cold ({isFahrenheit ? "14°F" : "-10°C"})</span>
+          <span>Hot ({isFahrenheit ? "95°F" : "35°C"})</span>
         </div>
       </div>
     </div>
