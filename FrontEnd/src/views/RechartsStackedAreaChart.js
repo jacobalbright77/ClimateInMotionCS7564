@@ -15,6 +15,8 @@ import {CountryContext} from './CountryContext.js'
 
 function RechartsStackedAreaChart() {
     const [data, setData] = useState([]);
+      const [useFahrenheit, setUseFahrenheit] = useState(false);
+      const convertCtoF = (celsius) => (celsius * 9) / 5 + 32;
   
     const colors = [
       "#ff0000", "#ffa500", "#008000", "#0000ff", "#800080", "#ee82ee",
@@ -35,8 +37,9 @@ function RechartsStackedAreaChart() {
         const reshaped = rawRows.map((row) => {
           const newRow = { Year: parseInt(row["Name"]) };
           selectedCountries.forEach((country) => {
-            if (row[country] && !isNaN(parseFloat(row[country]))) {
-              newRow[country] = parseFloat(row[country]);
+            const value = parseFloat(row[country]);
+            if (!isNaN(value)) {
+              newRow[country] = useFahrenheit ? convertCtoF(value) : value;
             }
           });
           return newRow;
@@ -45,11 +48,83 @@ function RechartsStackedAreaChart() {
         setData(reshaped);
       }
     });
-  }, []);
+  }, [useFahrenheit]);
 
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div
+          style={{
+            backgroundColor: "#fff",
+            border: "1px solid #ccc",
+            padding: "0.5rem",
+          }}
+        >
+          <div><b>Year: {label}</b></div>
+          {payload.map((entry, index) => (
+            <div key={index} style={{ color: entry.stroke }}>
+              {`${entry.name}: ${entry.value.toFixed(2)} °${useFahrenheit ? "F" : "C"}`}
+            </div>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
 
     return (
       <div className="chart-container">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: "1rem",
+          gap: "1rem",
+        }}
+      >
+        <span>{useFahrenheit ? "°F" : "°C"}</span>
+        <label
+          style={{
+            position: "relative",
+            display: "inline-block",
+            width: "34px",
+            height: "18px",
+            cursor: "pointer",
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={useFahrenheit}
+            onChange={() => setUseFahrenheit((prev) => !prev)}
+            style={{ opacity: 0, width: 0, height: 0 }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: useFahrenheit ? "#2196F3" : "#ccc",
+              borderRadius: "24px",
+              transition: ".4s",
+            }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              height: "14px",
+              width: "14px",
+              left: useFahrenheit ? "18px" : "2px",
+              bottom: "2px",
+              backgroundColor: "white",
+              borderRadius: "50%",
+              transition: ".4s",
+            }}
+          />
+        </label>
+      </div>
                 {selectedCountries.length === 0 ? (
         <h3><b>Please select countries for comparison on Heatmap tab...</b></h3>
         ) : <p></p>
@@ -62,7 +137,7 @@ function RechartsStackedAreaChart() {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="Year" />
             <YAxis />
-            <Tooltip />
+            <Tooltip content={<CustomTooltip />} />
             <Legend />
             {selectedCountries.map((name, index) => (
               <Area

@@ -10,6 +10,8 @@ const COLORS = [
 const TemperaturePieChart = () => {
   const [data, setData] = useState([]);
   const [year, setYear] = useState("2023");
+  const [useFahrenheit, setUseFahrenheit] = useState(false);
+  const convertToFahrenheit = (celsius) => (celsius * 9) / 5 + 32; 
 
   // Fetch and process data
   useEffect(() => {
@@ -22,10 +24,13 @@ const TemperaturePieChart = () => {
         }
 
         const filtered = Object.entries(json)
-          .map(([code, temps]) => ({
-            name: code,
-            value: temps[`${year}-07`],
-          }))
+          .map(([code, temps]) => {
+            const celsius = temps[`${year}-07`];
+            const value = useFahrenheit && typeof celsius === "number"
+              ? convertToFahrenheit(celsius)
+              : celsius;
+            return { name: code, value };
+          })
           .filter((entry) => entry.value !== undefined)
           .sort((a, b) => b.value - a.value)
           .slice(0, 10);
@@ -35,22 +40,70 @@ const TemperaturePieChart = () => {
       .catch((error) => {
         console.error("Fetch error:", error);
       });
-  }, [year]);
+  }, [year, useFahrenheit]);
 
   return (
     <div
       style={{
-        backgroundColor: "#111",
-        color: "#fff",
+        backgroundColor: "#fff",
+        color: "#000",
         minHeight: "100vh",
         padding: "1rem",
         fontSize: "1.1rem"
       }}
     >
-      {/* Title */}
-      <h2 style={{ textAlign: "center", fontSize: "2rem", marginBottom: "1rem" }}>
-        Top 10 Warmest Countries in {year}
-      </h2>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: "1.5rem",
+          gap: "1rem",
+        }}
+      >
+        <span>{useFahrenheit ? "°F" : "°C"}</span>
+        <label
+          style={{
+            position: "relative",
+            display: "inline-block",
+            width: "34px",
+            height: "18px",
+            cursor: "pointer",
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={useFahrenheit}
+            onChange={() => setUseFahrenheit((prev) => !prev)}
+            style={{ opacity: 0, width: 0, height: 0 }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: useFahrenheit ? "#2196F3" : "#ccc",
+              borderRadius: "24px",
+              transition: ".4s",
+            }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              height: "14px",
+              width: "14px",
+              left: useFahrenheit ? "18px" : "2px",
+              bottom: "2px",
+              backgroundColor: "white",
+              borderRadius: "50%",
+              transition: ".4s",
+            }}
+          />
+        </label>
+      </div>
 
       {/* Layout */}
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "6rem" }}>
@@ -62,6 +115,7 @@ const TemperaturePieChart = () => {
             alignItems: "center",
             width: "70px", // Adjusted width to accommodate the year display
             position: "relative", // For positioning the year value
+            marginRight:"2rem",
           }}
         >
           <span style={{ marginBottom: "0.5rem" }}>2023</span>
@@ -85,9 +139,9 @@ const TemperaturePieChart = () => {
             style={{
               position: "absolute",
               left: "60px", // Position the year value next to the slider
-              top: "calc(50% - 10px)", // Center the year value vertically
-              color: "#fff",
-              fontSize: "1rem",
+              top: "calc(50% - 20px)", // Center the year value vertically
+              color: "#000",
+              fontSize: "2rem",
               fontWeight: "bold",
             }}
           >
@@ -96,15 +150,41 @@ const TemperaturePieChart = () => {
           <span style={{ marginTop: "0.5rem" }}>1950</span>
         </div>
 
-        {/* Legend (Middle) */}
+        {/* Pie Chart (Middle) */}
+        <PieChart width={700} height={600}>
+          <Pie
+            dataKey="value"
+            data={data}
+            cx="50%"
+            cy="50%"
+            outerRadius={250}
+            label={({ value }) => `${value.toFixed(2)}°${useFahrenheit ? "F" : "C"}`}
+            labelLine={false}
+          >
+            {data.map((_, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#fff",
+              border: "1px solid #ccc",
+              color: "#000",
+              fontSize: "1rem"
+            }}
+            formatter={(value) => `${value.toFixed(2)}°${useFahrenheit ? "F" : "C"}`}
+          />
+        </PieChart>
+
+        {/* Legend (Right) */}
         <div
           style={{
-            marginRight: "0.1rem",
+            marginLeft:"1rem",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             gap: "0.5rem",
-            minWidth: "300px", // Add a minimum width to prevent shifting
+            minWidth: "250px", // Add a minimum width to prevent shifting
           }}
         >
           {data.map((entry, index) => (
@@ -129,32 +209,6 @@ const TemperaturePieChart = () => {
             </div>
           ))}
         </div>
-
-        {/* Pie Chart (Right) */}
-        <PieChart width={700} height={600}>
-          <Pie
-            dataKey="value"
-            data={data}
-            cx="50%"
-            cy="50%"
-            outerRadius={250}
-            label={({ value }) => `${value.toFixed(2)}°C`}
-            labelLine={false}
-          >
-            {data.map((_, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#fff",
-              border: "1px solid #ccc",
-              color: "#000",
-              fontSize: "1rem"
-            }}
-            formatter={(value) => `${value.toFixed(2)}°C`}
-          />
-        </PieChart>
       </div>
     </div>
   );
