@@ -36,10 +36,11 @@ const WorldTemperatureMap = () => {
     setSelectedYear(e.target.value);
   };
 
+  const clearCountries = () => {
+    setCountries([])
+  }
+
   const [tooltipInfo, setTooltipInfo] = React.useState("")
-
-  
-
 
   //Updates SelectedCountries list by adding country if not already present and removing if already in the list
   const handleCountrySelect = (geo) => {
@@ -74,6 +75,25 @@ const WorldTemperatureMap = () => {
         style={{ width: "80%", marginBottom: "0px" }}
       />
 
+      <h3 style={{ textAlign: "left"}}>Selected Countries: {selectedCountries.length != 0 ? selectedCountries.join(", ") : "None"}</h3>
+
+      <div style={{ textAlign: "left", marginTop: "40px" }}>
+          <button
+            key={"Clear Countries"}
+            onClick={() => clearCountries()}
+            style={{
+              margin: "0 5px",
+              padding: "5px 10px",
+              backgroundColor: "#f0f0f0",
+              color: "#000",
+              border: "2px solid #aaa",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Clear Countries
+          </button>
+          </div>
       {/* Map */}
       <ComposableMap
         projectionConfig={{

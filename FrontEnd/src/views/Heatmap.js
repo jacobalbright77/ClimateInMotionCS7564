@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useContext} from "react";
 
 import WorldTemperatureMap from "views/WorldTemperatureMap";
 
@@ -14,6 +14,8 @@ import {
   Col,
 } from "react-bootstrap";
 import { CardFooter } from "reactstrap";
+import {CountryContext} from './CountryContext.js'
+
 
 function Typography() {
   return (
