@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useContext} from "react";
 
 import RechartStackedAreaChart from "views/RechartsStackedAreaChart";
 import RechartsPieChartStatic from "views/RechartsPieChartStatic";
@@ -23,17 +23,27 @@ import {
   Tooltip,
 } from "react-bootstrap";
 
+import {CountryContext} from './CountryContext.js'
+
+// const {selectedCountries} = useContext(CountryContext)
+
+
 function Dashboard() {
   return (
     <>
+      {/* {selectedCountries.length === 0 && (
+        <h1>Please select countries in heatmap tab...</h1>
+      )} */}
       <Container fluid>
       <Row>
           <Col md="12">
             <Card>
               <Card.Header>
-                <Card.Title as="h3">Line Chart</Card.Title>
-                <p className="card-category">Temperature Increase by Country per Year</p>
+                
+                <Card.Title as="h2" style={{ textAlign: "center", marginBottom: "10px" }}>Line Chart</Card.Title>
+                <p className="card-category" style={{ textAlign: "center", marginBottom: "10px" }}>Temperature Increase by Country per Year</p>
               </Card.Header>
+              <hr></hr>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>
               <RechartsLineChart/>
@@ -49,8 +59,8 @@ function Dashboard() {
           <Col md="12">
             <Card>
               <Card.Header>
-                <Card.Title as="h3">Pie Chart</Card.Title>
-                <p className="card-category">Temperature Increase by Country per Year</p>
+                <Card.Title as="h2" style={{ textAlign: "center", marginBottom: "10px" }}>Pie Chart</Card.Title>
+                <p className="card-category" style={{ textAlign: "center", marginBottom: "10px" }}>Temperature Increase by Country per Year</p>
               </Card.Header>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>
@@ -67,8 +77,8 @@ function Dashboard() {
           <Col md="12">
             <Card>
               <Card.Header>
-                <Card.Title as="h3">Stacked Area Chart</Card.Title>
-                <p className="card-category">Temperature Increase by Country per Year</p>
+                <Card.Title as="h2" style={{ textAlign: "center", marginBottom: "10px" }}>Stacked Area Chart</Card.Title>
+                <p className="card-category" style={{ textAlign: "center", marginBottom: "10px" }}>Temperature Increase by Country per Year</p>
               </Card.Header>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>
@@ -85,12 +95,14 @@ function Dashboard() {
           <Col md="12">
             <Card>
               <Card.Header>
-                <Card.Title as="h3">Global Temperature Anomaly: Stripe Chart</Card.Title>
+                <Card.Title as="h2" style={{ textAlign: "center", marginBottom: "10px" }}>Global Temperature Anomaly</Card.Title>
+                <p style={{ textAlign: "center", marginBottom: "10px" }}>Stripe Chart</p>
+
                 <p className="card-category"><b>1)</b> This chart shows global average temperature anomalies from 1950 to 2023.</p>
                 <p className="card-category"><b>2)</b> The anomaly is the difference from the average temperature baseline across all years.</p>
                 <p className="card-category"><b>3)</b> Warmer colors indicate years hotter than average, while cooler colors indicate years colder than average.</p>
                 <p className="card-category"><b>4)</b> You can toggle between Celsius and Fahrenheit using the switch below.</p>
-                
+                <hr></hr>
               </Card.Header>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>
@@ -107,8 +119,8 @@ function Dashboard() {
           <Col md="12">
             <Card>
               <Card.Header>
-                <Card.Title as="h3">Pie Chart</Card.Title>
-                <p className="card-category">Temperature Increase by Country per Year</p>
+                <Card.Title as="h3" style={{ textAlign: "center", marginBottom: "10px" }}>Pie Chart</Card.Title>
+                <p className="card-category" style={{ textAlign: "center", marginBottom: "10px" }}>Temperature Increase by Country per Year</p>
               </Card.Header>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>
@@ -126,7 +138,7 @@ function Dashboard() {
             <Card>
               <Card.Header>
                 <Card.Title as="h3">Pie Chart</Card.Title>
-                <p className="card-category">Temperature Increase by Country per Year</p>
+                <p className="card-category" style={{ textAlign: "center", marginBottom: "10px" }}>Temperature Increase by Country per Year</p>
               </Card.Header>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>
@@ -142,7 +154,7 @@ function Dashboard() {
             <Card>
               <Card.Header>
                 <Card.Title as="h3">Other Chart</Card.Title>
-                <p className="card-category">Temperature Increase by Country per Year</p>
+                <p className="card-category" style={{ textAlign: "center", marginBottom: "10px" }}>Temperature Increase by Country per Year</p>
               </Card.Header>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>

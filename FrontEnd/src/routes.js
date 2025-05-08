@@ -17,9 +17,15 @@
 */
 import Dashboard from "views/Dashboard.js";
 import Heatmap from "views/Heatmap.js";
+import Homepage from "views/Homepage"
 
 const dashboardRoutes = [
-
+  {
+    path: "/homepage",
+    name: "Homepage",
+    icon: "nc-icon nc-planet",
+    component: Homepage,
+  },
   {
     path: "/heatmap",
     name: "Heatmap",

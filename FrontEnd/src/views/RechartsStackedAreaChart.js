@@ -49,13 +49,13 @@ function RechartsStackedAreaChart() {
 
     return (
       <div className="chart-container">
-        <h3 style={{ textAlign: "center", marginBottom: "10px" }}>
+        {/* <h3 style={{ textAlign: "center", marginBottom: "10px" }}>
           Stacked Area Chart
         </h3>
         <p style={{ textAlign: "center", marginTop: 0, color: "#666" }}>
           Temperature Increase by Country per Year
-        </p>
-        <ResponsiveContainer width="100%" height={800}>
+        </p> */}
+        <ResponsiveContainer width="100%" height={500}>
           <AreaChart
             data={data}
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}

@@ -43,11 +43,10 @@ function Sidebar({ color, image, routes }) {
             className="simple-text logo-mini mx-1"
           >
           </a>
-          <p className="simple-text " style={{ fontSize: "17px" }}>
+          <p className="simple-text " style={{ fontSize: "16px" }}>
             Climate in Motion
           </p>
-          
-          <i className="nc-icon nc-globe-2" style={{ fontSize: "1.5rem" }}></i>            
+          <img src={require("assets/img/CIM_Logo_white.png")} alt="Climate in Motion Logo" height={47}/>
           
 
         </div>
