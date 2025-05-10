@@ -72,6 +72,7 @@ function RechartsLineChart() {
     }
     return null;
   };
+  
 
   return (
     <div className="chart-container">

@@ -66,7 +66,7 @@ const TemperaturePieChartForSelectedCountries = () => {
 
   // Show message if no data found
   if (data.length === 0) {
-    return <p style={{ color: "white", padding: "2rem" }}>No data available for selected countries and year.</p>;
+    return <h3><b>Please select countries for comparison on Heatmap tab...</b></h3>
   }
 
   return (
