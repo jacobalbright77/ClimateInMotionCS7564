@@ -115,7 +115,7 @@ function Dashboard() {
       <h1><b>Static Visualizations</b></h1>
       </div>
       <div className="d-flex align-items-center justify-content-center">
-      <h3>Visuaizations Independent on Heatmap Selection</h3>
+      <h3>Visualizations Independent on Heatmap Selection</h3>
       </div>
       <div style={{ margin: "30px 0" }}></div>
           <Row>
