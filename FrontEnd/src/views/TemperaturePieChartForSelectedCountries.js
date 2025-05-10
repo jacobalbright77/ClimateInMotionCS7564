@@ -12,9 +12,9 @@ const COLORS = [
 // Main component to display the temperature pie chart
 const TemperaturePieChartForSelectedCountries = () => {
   const [data, setData] = useState([]);
+  const [selectedYear, setYear] = useState("2023");
   const [isFahrenheit, setIsFahrenheit] = useState(false);
   const {selectedCountries} = useContext(CountryContext)
-  const selectedYear = "1950"
   
 
   // Load and parse CSV data when component mounts or selection changes
@@ -70,16 +70,11 @@ const TemperaturePieChartForSelectedCountries = () => {
   }
 
   return (
-    <div style={{ backgroundColor: "#111", color: "#fff", minHeight: "100vh", padding: "1rem", position: "relative" }}>
-      
-      {/* Chart Description */}
-      <div style={{ fontSize: "0.9rem", color: "#fff", position: "absolute", top: "1rem", left: "1rem", maxWidth: "480px" }}>
-        This chart presents the average temperatures for the selected countries in the selected year.
-        You can toggle between Celsius and Fahrenheit using the switch below.
-      </div>
+    <div style={{ backgroundColor: "#111", color: "#fff", minHeight: "10vh", padding: "1rem", position: "relative" }}>
+    
 
       {/* Chart Title */}
-      <h2 style={{ textAlign: "center", fontSize: "2rem", marginTop: "5rem", marginBottom: "1rem" }}>
+      <h2 style={{ textAlign: "center", fontSize: "2rem", marginBottom: "1rem" }}>
         Temperature Comparison for Selected Countries in {selectedYear}
       </h2>
 
@@ -104,9 +99,42 @@ const TemperaturePieChartForSelectedCountries = () => {
         </label>
         <span style={{ marginLeft: "0.5rem", color: isFahrenheit ? "#FFA500" : "#ccc" }}>°F</span>
       </div>
-
       {/* Chart and legend */}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5rem" }}>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "4rem" }}>
+      {/* Year Selection Slider */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "70px", position: "relative" }}>
+          <span style={{ marginBottom: "0.5rem" }}>2023</span>
+          <input
+            type="range"
+            min="1950"
+            max="2023"
+            value={selectedYear}
+            onChange={(e) => setYear(e.target.value)}
+            style={{
+              writingMode: "bt-lr",
+              WebkitAppearance: "slider-vertical",
+              height: "300px",
+              width: "50px",
+              background: "#82ca9d",
+              borderRadius: "40px",
+              outline: "none",
+              accentColor: "#ff0000"
+            }}
+          />
+          <span style={{
+            position: "absolute",
+            left: "60px",
+            top: "calc(50% - 10px)",
+            color: "#fff",
+            fontSize: "1rem",
+            fontWeight: "bold"
+          }}>
+            {selectedYear}
+          </span>
+          <span style={{ marginTop: "0.5rem" }}>1950</span>
+        </div>
+      
+
         <div style={{ minWidth: "300px" }}>
           {data.map((entry, index) => (
             <div key={entry.name} style={{ display: "flex", alignItems: "center", marginBottom: "0.7rem" }}>
