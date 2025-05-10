@@ -68,7 +68,7 @@ function Admin() {
           <AdminNavbar />
           <div className="content">
             <CountryProvider>
-            <Switch>{getRoutes(routes)} <Redirect from="/" to="/heatmap" /></Switch>
+            <Switch>{getRoutes(routes)} <Redirect from="/" to="/homepage" /></Switch>
             </CountryProvider>
           </div>
           <Footer />
