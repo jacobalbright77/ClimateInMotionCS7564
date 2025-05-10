@@ -100,7 +100,7 @@ const TemperaturePieChartForSelectedCountries = () => {
         <span style={{ marginLeft: "0.5rem", color: isFahrenheit ? "#FFA500" : "#ccc" }}>°F</span>
       </div>
       {/* Chart and legend */}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "4rem" }}>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8rem" }}>
       {/* Year Selection Slider */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "70px", position: "relative" }}>
           <span style={{ marginBottom: "0.5rem" }}>2023</span>

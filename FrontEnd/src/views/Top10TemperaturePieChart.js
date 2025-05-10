@@ -75,18 +75,11 @@ const Top10TemperaturePieChart = () => {
   }
 
   return (
-    <div style={{ backgroundColor: "#111", color: "#fff", minHeight: "100vh", padding: "1rem", position: "relative" }}>
+    <div style={{ backgroundColor: "#111", color: "#fff", minHeight: "10vh", padding: "1rem", position: "relative" }}>
 
-
-      
-      {/* Chart Description */}
-      <div style={{ fontSize: "0.9rem", color: "#fff", position: "absolute", top: "1rem", left: "1rem", maxWidth: "480px" }}>
-        This chart shows average temperatures for the top 10 warmest countries in the selected year.
-        You can toggle between Celsius and Fahrenheit or change the year using the vertical slider.
-      </div>
 
       {/* Chart Title */}
-      <h2 style={{ textAlign: "center", fontSize: "2rem", marginTop: "6rem", marginBottom: "1rem" }}>
+      <h2 style={{ textAlign: "center", fontSize: "2rem", marginBottom: "1rem" }}>
         Top 10 Warmest Countries in {year}
       </h2>
 
@@ -175,7 +168,7 @@ const Top10TemperaturePieChart = () => {
         </div>
 
         {/* Pie Chart */}
-        <PieChart width={700} height={600}>
+        <PieChart width={600} height={500}>
           <Pie
             dataKey="value"
             data={data}

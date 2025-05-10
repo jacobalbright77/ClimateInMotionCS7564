@@ -74,6 +74,8 @@ function Dashboard() {
                 <p className="card-category"><b>1)</b> This chart presents the average temperatures for the selected countries in the selected year.</p>
                 <p className="card-category"><b>2)</b> Use the vertical slider on the left to choose a year between 1950 and 2023.</p>
                 <p className="card-category"><b>3)</b> You can toggle between Celsius and Fahrenheit using the switch below.</p>
+                                <hr></hr>
+
               </Card.Header>
               <Card.Body>
               <div style={{ margin: "20px 0" }}></div>

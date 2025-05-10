@@ -62,7 +62,7 @@ const WorldTemperatureMap = () => {
 
   return (
     <div style={{ textAlign: "center", paddingBottom: "30px" }}>
-      <h2>World Average Temperature Map ({selectedYear})</h2>
+      <h2>Selected Year: {selectedYear}</h2>
 
       {/* Year Slider */}
       <input
@@ -100,9 +100,10 @@ const WorldTemperatureMap = () => {
           rotate: [-10, 0, 0],
           scale: 147
         }}
+        viewBox="1 75 800 430"
         style={{ width: "100%", height: "auto" }}
       >
-        <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
+        <Graticule stroke="#E4E5E6" strokeWidth={0.6} />
         {data.length > 0 && (
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
