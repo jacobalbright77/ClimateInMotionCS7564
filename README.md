@@ -10,6 +10,9 @@ We used React, Recharts, D3, and react-simple-maps. The temperature data came fr
 To run the project:
 
 git clone https://github.com/your-username/ClimateInMotionCS7564.git
+
 cd ClimateInMotionCS7564/FrontEnd
+
 npm install --legacy-peer-deps
+
 npm start
