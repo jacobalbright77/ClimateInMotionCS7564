@@ -38,6 +38,7 @@ function Typography() {
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
+                South Sudan, French Guiana, and Western Sahara are displayed on the map but do not have available temperature data.
                 Temperature dataset provided by World Bank
                 </Card.Footer>
             </Card>

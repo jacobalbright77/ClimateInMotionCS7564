@@ -15,6 +15,8 @@ import {CountryContext} from './CountryContext.js'
 
 const geoUrl = "/features.json";
 
+const emptyDataCountryName = ["South Sudan", "Western Sahara", "French Guiana"]
+
 // 🎨 Color scale for temperatures
 const colorScale = scaleLinear()
   .domain([-10, 15, 35])  // cold to warm
@@ -25,6 +27,7 @@ const WorldTemperatureMap = () => {
   const [data, setData] = useState([]);
   const [selectedYear, setSelectedYear] = useState("1950");
   const {selectedCountries, setCountries } = useContext(CountryContext) //Get context from CountryContext.js
+  const [isFahrenheit, setIsFahrenheit] = useState(false);
 
   useEffect(() => {
     csv(`/world-temperatures.csv`).then((data) => {
@@ -45,6 +48,8 @@ const WorldTemperatureMap = () => {
   //Updates SelectedCountries list by adding country if not already present and removing if already in the list
   const handleCountrySelect = (geo) => {
 
+    if (!emptyDataCountryName.includes(geo.properties.name)) {
+
     //Check if clicked country is already in the selectedCountries list
     const selectionCheck = selectedCountries.includes(geo.properties.name)
     
@@ -57,6 +62,7 @@ const WorldTemperatureMap = () => {
     selectedCountries.concat(geo.properties.name)
 
     setCountries(selectedCountriesUpdate) //Updated selected countries through context to update other files
+    }
   }
 
 
@@ -93,6 +99,59 @@ const WorldTemperatureMap = () => {
           >
             Clear Countries
           </button>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: "1rem",
+          gap: "1rem",
+        }}
+      >
+        <span>{isFahrenheit ? "°F" : "°C"}</span>
+        <label
+          style={{
+            position: "relative",
+            display: "inline-block",
+            width: "34px",
+            height: "18px",
+            cursor: "pointer",
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={isFahrenheit}
+            onChange={() => setIsFahrenheit((prev) => !prev)}
+            style={{ opacity: 0, width: 0, height: 0 }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: isFahrenheit ? "#2196F3" : "#ccc",
+              borderRadius: "24px",
+              transition: ".4s",
+            }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              height: "14px",
+              width: "14px",
+              left: isFahrenheit ? "18px" : "2px",
+              bottom: "2px",
+              backgroundColor: "white",
+              borderRadius: "50%",
+              transition: ".4s",
+            }}
+          />
+        </label>
+      </div>
+
           </div>
       {/* Map */}
       <ComposableMap
@@ -122,7 +181,9 @@ const WorldTemperatureMap = () => {
                     onMouseOver={
                     d && d[selectedYear] !== undefined ?
                       () => {
-                         setTooltipInfo(`${geo.properties.name}: ${d[selectedYear]}°C`) 
+                        const value = +d[selectedYear];
+                         const display = isFahrenheit ? (value * 9/5 + 32).toFixed(2) + "°F" : value.toFixed(2) + "°C";
+                         setTooltipInfo(`${geo.properties.name}: ${display}`)
                         } : null
                     }
                     onMouseOut={() => {
@@ -130,8 +191,8 @@ const WorldTemperatureMap = () => {
                     }}
                     style={{
                       default: { outline: "#000", stroke: "#000", strokeWidth: 0.3},
-                      hover: { outline: "#000", stroke: "#000", strokeWidth: 1.2},
-                      pressed: { outline: "#fff", stroke: "#000", strokeWidth: 2.0}
+                      hover: !emptyDataCountryName.includes(geo.properties.name) ? { outline: "#000", stroke: "#000", strokeWidth: 1.2} : { outline: "#000", stroke: "#000", strokeWidth: 0.3},
+                      pressed: !emptyDataCountryName.includes(geo.properties.name) ? { outline: "#fff", stroke: "#000", strokeWidth: 2.0} : { outline: "#000", stroke: "#000", strokeWidth: 0.3}
                     }}
                   />
                 );
@@ -140,7 +201,7 @@ const WorldTemperatureMap = () => {
           </Geographies>
         )}
       </ComposableMap>
-      <Tooltip id="mapTooltip" />
+<Tooltip id="mapTooltip" place="top" float={true}/>
       
       {/* <p>Selected Countries:</p>
       <ul>
@@ -165,8 +226,8 @@ const WorldTemperatureMap = () => {
           fontSize: "14px",
           color: "#555"
         }}>
-          <span>Cold (-10°C)</span>
-          <span>Hot (35°C)</span>
+          <span>Cold ({isFahrenheit ? "14°F" : "-10°C"})</span>
+          <span>Hot ({isFahrenheit ? "95°F" : "35°C"})</span>
         </div>
       </div>
     </div>

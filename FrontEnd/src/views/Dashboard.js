@@ -39,7 +39,7 @@ function Dashboard() {
       <h1><b>Dynamic Visualizations</b></h1>
       </div>
       <div className="d-flex align-items-center justify-content-center">
-      <h3>Visuaizations Dependent on Heatmap Selection</h3>
+      <h3>Visualizations Dependent on Heatmap Selection</h3>
       </div>
       <div style={{ margin: "30px 0" }}></div>
       <Row>
@@ -60,7 +60,7 @@ function Dashboard() {
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
-                Note at the bottom here...
+                Temperature dataset provided by World Bank
               </Card.Footer>
             </Card>
           </Col>
@@ -82,7 +82,7 @@ function Dashboard() {
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
-                Note at the bottom here...
+                Temperature dataset provided by World Bank
               </Card.Footer>
             </Card>
           </Col>
@@ -105,7 +105,7 @@ function Dashboard() {
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
-                Note at the bottom here...
+                Temperature dataset provided by World Bank
               </Card.Footer>
             </Card>
           </Col>
@@ -135,7 +135,7 @@ function Dashboard() {
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
-                Note at the bottom here...
+                Temperature dataset provided by World Bank
               </Card.Footer>
             </Card>
           </Col>
@@ -157,45 +157,11 @@ function Dashboard() {
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
-                Note at the bottom here...
+                Temperature dataset provided by World Bank
               </Card.Footer>
             </Card>
           </Col>
           </Row>
-          <Row>
-          <Col md="6">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h3">Pie Chart</Card.Title>
-                <p className="card-category" style={{ textAlign: "center", marginBottom: "10px" }}>Temperature Increase by Country per Year</p>
-              </Card.Header>
-              <Card.Body>
-              <div style={{ margin: "20px 0" }}></div>
-              {/* <RechartsPieChart/> */}
-              </Card.Body>
-              <Card.Footer>
-                <hr></hr>
-                Note at the bottom here...
-              </Card.Footer>
-            </Card>
-          </Col>
-          <Col md="6">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h3">Other Chart</Card.Title>
-                <p className="card-category" style={{ textAlign: "center", marginBottom: "10px" }}>Temperature Increase by Country per Year</p>
-              </Card.Header>
-              <Card.Body>
-              <div style={{ margin: "20px 0" }}></div>
-              {/* <RechartsPieChart/> */}
-              </Card.Body>
-              <Card.Footer>
-                <hr></hr>
-                Note at the bottom here...
-              </Card.Footer>
-            </Card>
-          </Col>
-        </Row>
       </Container>
     </>
   );

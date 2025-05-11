@@ -1,125 +1,123 @@
 import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
-import Papa from "papaparse";
 
-// Define colors for pie chart slices
+
 const COLORS = [
   "#8884d8", "#8dd1e1", "#ffc658", "#a4de6c", "#d0ed57", "#82ca9d", "#ff8042",
   "#ffbb28", "#ff7300", "#00C49F", "#FF69B4", "#A9A9A9", "#DC143C", "#20B2AA"
 ];
 
-// Main component to display Top 10 Warmest Countries Pie Chart
-const Top10TemperaturePieChart = () => {
+const TemperaturePieChart = () => {
   const [data, setData] = useState([]);
   const [year, setYear] = useState("2023");
-  const [isFahrenheit, setIsFahrenheit] = useState(false);
+  const [useFahrenheit, setUseFahrenheit] = useState(false);
+  const convertToFahrenheit = (celsius) => (celsius * 9) / 5 + 32; 
 
-  // Load and parse CSV data when the year changes
+  // Fetch and process data
   useEffect(() => {
-    console.log("🚀 Loading data for year:", year);
-
-    fetch("/world-temperatures-transpose.csv")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Failed to load CSV: ${res.statusText}`);
+    fetch("/full_data.json")
+      .then((res) => res.json())
+      .then((json) => {
+        if (!json || Object.keys(json).length === 0) {
+          console.error("Invalid response from API:", json);
+          return;
         }
-        return res.text();
+
+        const filtered = Object.entries(json)
+          .map(([code, temps]) => {
+            const celsius = temps[`${year}-07`];
+            const value = useFahrenheit && typeof celsius === "number"
+              ? convertToFahrenheit(celsius)
+              : celsius;
+            return { name: code, value };
+          })
+          .filter((entry) => entry.value !== undefined)
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 10);
+
+        setData(filtered);
       })
-      .then((csvText) => {
-        console.log("✅ CSV loaded successfully. Sample preview:\n", csvText.split("\n").slice(0, 5).join("\n"));
-
-        Papa.parse(csvText, {
-          header: true,
-          skipEmptyLines: true,
-          complete: (result) => {
-            const rows = result.data;
-            const row = rows.find((r) => r["Name"] === year); // Match by year in "Name" column
-
-            if (!row) {
-              console.warn(`⚠️ No data found for year ${year}.`);
-              setData([]);
-              return;
-            }
-
-            console.log("✅ Found data for year:", year);
-
-            // Convert each country-temperature pair to an object and sort them
-            const formattedData = Object.entries(row)
-              .filter(([key]) => key !== "Name") // Exclude the year column
-              .map(([country, temp]) => ({
-                name: country,
-                value: parseFloat(temp)
-              }))
-              .filter(entry => !isNaN(entry.value)) // Keep valid numbers only
-              .sort((a, b) => b.value - a.value)    // Sort descending by temperature
-              .slice(0, 10);                        // Keep top 10 only
-
-            console.log("✅ Top 10 countries data:", formattedData);
-            setData(formattedData);
-          },
-          error: (err) => console.error("❌ CSV parsing error:", err)
-        });
-      })
-      .catch((err) => console.error("❌ Fetch error:", err));
-  }, [year]);
-
-  // Format the temperature based on the selected unit
-  const formatTemperature = (value) =>
-    isFahrenheit
-      ? `${(value * 9 / 5 + 32).toFixed(2)}°F`
-      : `${value.toFixed(2)}°C`;
-
-  // Display message if no data available
-  if (data.length === 0) {
-    return <p style={{ color: "white", padding: "2rem" }}>No data found for year {year}.</p>;
-  }
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
+  }, [year, useFahrenheit]);
 
   return (
-    <div style={{ backgroundColor: "#111", color: "#fff", minHeight: "10vh", padding: "1rem", position: "relative" }}>
+    <div
+      style={{
+        backgroundColor: "#fff",
+        color: "#000",
+        minHeight: "10vh",
+        padding: "1rem",
+        fontSize: "1.1rem"
+      }}
+    >
 
-
-      {/* Chart Title */}
-      <h2 style={{ textAlign: "center", fontSize: "2rem", marginBottom: "1rem" }}>
-        Top 10 Warmest Countries in {year}
-      </h2>
-
-      {/* Celsius/Fahrenheit Toggle */}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "2rem" }}>
-        <span style={{ marginRight: "0.5rem", color: !isFahrenheit ? "#FFA500" : "#ccc" }}>°C</span>
-        <label style={{
-          position: "relative",
-          display: "inline-block",
-          width: "60px",
-          height: "30px",
-          backgroundColor: "#90ee90",
-          borderRadius: "30px",
-          cursor: "pointer"
-        }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: "1.5rem",
+          gap: "1rem",
+        }}
+      >
+        <span>{useFahrenheit ? "°F" : "°C"}</span>
+        <label
+          style={{
+            position: "relative",
+            display: "inline-block",
+            width: "34px",
+            height: "18px",
+            cursor: "pointer",
+          }}
+        >
           <input
             type="checkbox"
-            checked={isFahrenheit}
-            onChange={() => setIsFahrenheit(!isFahrenheit)}
+            checked={useFahrenheit}
+            onChange={() => setUseFahrenheit((prev) => !prev)}
             style={{ opacity: 0, width: 0, height: 0 }}
           />
-          <span style={{
-            position: "absolute",
-            top: "3px",
-            left: isFahrenheit ? "32px" : "3px",
-            width: "24px",
-            height: "24px",
-            backgroundColor: "#ff4444",
-            borderRadius: "50%",
-            transition: "left 0.3s ease"
-          }}></span>
+          <span
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: useFahrenheit ? "#2196F3" : "#ccc",
+              borderRadius: "24px",
+              transition: ".4s",
+            }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              height: "14px",
+              width: "14px",
+              left: useFahrenheit ? "18px" : "2px",
+              bottom: "2px",
+              backgroundColor: "white",
+              borderRadius: "50%",
+              transition: ".4s",
+            }}
+          />
         </label>
-        <span style={{ marginLeft: "0.5rem", color: isFahrenheit ? "#FFA500" : "#ccc" }}>°F</span>
       </div>
 
-      {/* Chart Layout: Slider + Legend + Pie Chart */}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8rem" }}>
-
-        {/* Year Selection Slider */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "70px", position: "relative" }}>
+      {/* Layout */}
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "6rem" }}>
+        {/* Year Slider (Left) */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "70px", // Adjusted width to accommodate the year display
+            position: "relative", // For positioning the year value
+            marginRight:"2rem",
+          }}
+        >
           <span style={{ marginBottom: "0.5rem" }}>2023</span>
           <input
             type="range"
@@ -131,51 +129,36 @@ const Top10TemperaturePieChart = () => {
               writingMode: "bt-lr",
               WebkitAppearance: "slider-vertical",
               height: "300px",
-              width: "50px",
-              background: "#82ca9d",
-              borderRadius: "40px",
+              width: "10px",
+              background: "#fff", // Changed color to green
+              borderRadius: "20px",
               outline: "none",
-              accentColor: "#ff0000"
             }}
           />
-          <span style={{
-            position: "absolute",
-            left: "60px",
-            top: "calc(50% - 10px)",
-            color: "#fff",
-            fontSize: "1rem",
-            fontWeight: "bold"
-          }}>
+          <span
+            style={{
+              position: "absolute",
+              left: "60px", // Position the year value next to the slider
+              top: "calc(50% - 20px)", // Center the year value vertically
+              color: "#000",
+              fontSize: "2rem",
+              fontWeight: "bold",
+            }}
+          >
             {year}
           </span>
           <span style={{ marginTop: "0.5rem" }}>1950</span>
         </div>
 
-        {/* Legend */}
-        <div style={{ minWidth: "300px" }}>
-          {data.map((entry, index) => (
-            <div key={entry.name} style={{ display: "flex", alignItems: "center", marginBottom: "0.7rem" }}>
-              <div style={{
-                width: "14px",
-                height: "14px",
-                backgroundColor: COLORS[index % COLORS.length],
-                borderRadius: "50%",
-                marginRight: "12px"
-              }} />
-              <span style={{ fontSize: "1.2rem" }}>{entry.name}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Pie Chart */}
-        <PieChart width={600} height={500}>
+        {/* Pie Chart (Middle) */}
+        <PieChart width={700} height={600}>
           <Pie
             dataKey="value"
             data={data}
             cx="50%"
             cy="50%"
             outerRadius={250}
-            label={({ value }) => formatTemperature(value)}
+            label={({ value }) => `${value.toFixed(2)}°${useFahrenheit ? "F" : "C"}`}
             labelLine={false}
           >
             {data.map((_, index) => (
@@ -183,13 +166,52 @@ const Top10TemperaturePieChart = () => {
             ))}
           </Pie>
           <Tooltip
-            contentStyle={{ backgroundColor: "#fff", border: "1px solid #ccc", color: "#000", fontSize: "1rem" }}
-            formatter={(value) => formatTemperature(value)}
+            contentStyle={{
+              backgroundColor: "#fff",
+              border: "1px solid #ccc",
+              color: "#000",
+              fontSize: "1rem"
+            }}
+            formatter={(value) => `${value.toFixed(2)}°${useFahrenheit ? "F" : "C"}`}
           />
         </PieChart>
+
+        {/* Legend (Right) */}
+        <div
+          style={{
+            marginLeft:"1rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "0.5rem",
+            minWidth: "250px", // Add a minimum width to prevent shifting
+          }}
+        >
+          {data.map((entry, index) => (
+            <div
+              key={entry.name}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                fontSize: "1.1rem"
+              }}
+            >
+              <div
+                style={{
+                  width: "12px",
+                  height: "12px",
+                  backgroundColor: COLORS[index % COLORS.length],
+                  borderRadius: "50%",
+                  marginRight: "12px"
+                }}
+              />
+              <span>{entry.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
-export default Top10TemperaturePieChart;
+export default TemperaturePieChart;

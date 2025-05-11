@@ -70,39 +70,73 @@ const TemperaturePieChartForSelectedCountries = () => {
   }
 
   return (
-    <div style={{ backgroundColor: "#111", color: "#fff", minHeight: "10vh", padding: "1rem", position: "relative" }}>
-    
-
-      {/* Chart Title */}
-      <h2 style={{ textAlign: "center", fontSize: "2rem", marginBottom: "1rem" }}>
-        Temperature Comparison for Selected Countries in {selectedYear}
-      </h2>
-
+    <div style={{ backgroundColor: "#fff", color: "#111", minHeight: "10vh", padding: "1rem", position: "relative" }}>
       {/* Toggle Celsius/Fahrenheit */}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "2rem" }}>
-        <span style={{ marginRight: "0.5rem", color: isFahrenheit ? "#ccc" : "#FFA500" }}>°C</span>
-        <label style={{
-          position: "relative", width: "60px", height: "30px", backgroundColor: "#90ee90",
-          borderRadius: "30px", cursor: "pointer"
-        }}>
+<div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: "1.5rem",
+          gap: "1rem",
+        }}
+      >
+        <span>{isFahrenheit ? "°F" : "°C"}</span>
+        <label
+          style={{
+            position: "relative",
+            display: "inline-block",
+            width: "34px",
+            height: "18px",
+            cursor: "pointer",
+          }}
+        >
           <input
             type="checkbox"
             checked={isFahrenheit}
-            onChange={() => setIsFahrenheit(!isFahrenheit)}
+            onChange={() => setIsFahrenheit((prev) => !prev)}
             style={{ opacity: 0, width: 0, height: 0 }}
           />
-          <span style={{
-            position: "absolute", top: "3px", left: isFahrenheit ? "32px" : "3px",
-            width: "24px", height: "24px", backgroundColor: "#ff4444", borderRadius: "50%",
-            transition: "left 0.3s ease"
-          }} />
+          <span
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: isFahrenheit ? "#2196F3" : "#ccc",
+              borderRadius: "24px",
+              transition: ".4s",
+            }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              height: "14px",
+              width: "14px",
+              left: isFahrenheit ? "18px" : "2px",
+              bottom: "2px",
+              backgroundColor: "white",
+              borderRadius: "50%",
+              transition: ".4s",
+            }}
+          />
         </label>
-        <span style={{ marginLeft: "0.5rem", color: isFahrenheit ? "#FFA500" : "#ccc" }}>°F</span>
       </div>
       {/* Chart and legend */}
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8rem" }}>
       {/* Year Selection Slider */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "70px", position: "relative" }}>
+        {/* Year Slider (Left) */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "70px", // Adjusted width to accommodate the year display
+            position: "relative", // For positioning the year value
+            marginRight:"2rem",
+          }}
+        >
           <span style={{ marginBottom: "0.5rem" }}>2023</span>
           <input
             type="range"
@@ -114,38 +148,27 @@ const TemperaturePieChartForSelectedCountries = () => {
               writingMode: "bt-lr",
               WebkitAppearance: "slider-vertical",
               height: "300px",
-              width: "50px",
-              background: "#82ca9d",
-              borderRadius: "40px",
+              width: "10px",
+              background: "#fff", // Changed color to green
+              borderRadius: "20px",
               outline: "none",
-              accentColor: "#ff0000"
             }}
           />
-          <span style={{
-            position: "absolute",
-            left: "60px",
-            top: "calc(50% - 10px)",
-            color: "#fff",
-            fontSize: "1rem",
-            fontWeight: "bold"
-          }}>
+          <span
+            style={{
+              position: "absolute",
+              left: "60px", // Position the year value next to the slider
+              top: "calc(50% - 20px)", // Center the year value vertically
+              color: "#000",
+              fontSize: "2rem",
+              fontWeight: "bold",
+            }}
+          >
             {selectedYear}
           </span>
           <span style={{ marginTop: "0.5rem" }}>1950</span>
         </div>
-      
-
-        <div style={{ minWidth: "300px" }}>
-          {data.map((entry, index) => (
-            <div key={entry.name} style={{ display: "flex", alignItems: "center", marginBottom: "0.7rem" }}>
-              <div style={{
-                width: "14px", height: "14px", backgroundColor: COLORS[index % COLORS.length],
-                borderRadius: "50%", marginRight: "12px"
-              }} />
-              <span style={{ fontSize: "1.2rem" }}>{entry.name}</span>
-            </div>
-          ))}
-        </div>
+  
 
         <PieChart width={600} height={500}>
           <Pie
@@ -169,6 +192,40 @@ const TemperaturePieChartForSelectedCountries = () => {
             formatter={(value) => formatTemperature(value)}
           />
         </PieChart>
+
+                {/* Legend (Right) */}
+        <div
+          style={{
+            marginLeft:"1rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "0.5rem",
+            minWidth: "250px", // Add a minimum width to prevent shifting
+          }}
+        >
+          {data.map((entry, index) => (
+            <div
+              key={entry.name}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                fontSize: "1.1rem"
+              }}
+            >
+              <div
+                style={{
+                  width: "12px",
+                  height: "12px",
+                  backgroundColor: COLORS[index % COLORS.length],
+                  borderRadius: "50%",
+                  marginRight: "12px"
+                }}
+              />
+              <span>{entry.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
